@@ -23,6 +23,13 @@ public class Player : MonoBehaviour
     [TextArea(1, 10)]
     string playerBio = "This is a Bio about Joe the Tools Programmer. He's an awesome guy and such.";
 
+    [SerializeField]
+    CharacterController controller;
+
+    [SerializeField]
+    [Range(2f, 10f)]
+    float speed = 5f;
+
     [Header("Items")]
     [SerializeField]
     int numOfObjectsInInventory = 3;
@@ -45,5 +52,17 @@ public class Player : MonoBehaviour
         print("I did it!");
         GameObject newPlayer = new GameObject();
         newPlayer.AddComponent<Player>();
+    }
+
+    private void Update()
+    {
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+        if (direction.magnitude >= 0.1f)
+        {
+            controller.Move(direction * speed * Time.deltaTime);
+        }
     }
 }
